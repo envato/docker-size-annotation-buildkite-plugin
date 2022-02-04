@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+# The image is tagged by generating an additional docker compose file
+# https://github.com/buildkite-plugins/docker-compose-buildkite-plugin/blob/db3fba294d9126661e641136a0841cdf08796a19/commands/build.sh#L64-L67
+# Extract the image name and tag from this file.
+DOCKER_COMPOSE_OVERRIDE="docker-compose.buildkite-${BUILDKITE_BUILD_NUMBER}-override.yml"
+if [ -f "$DOCKER_COMPOSE_OVERRIDE" ]; then
+  echo "Running image size annotation"
+  tag=$(awk '{$1=$1;print}' < "$DOCKER_COMPOSE_OVERRIDE" | awk -F ": " '$1 ~ /image/ { print $2 }')
+  context=$(echo "${tag}" | awk -F : '{print $2}')
+  echo "Using tag: ${tag} and context: ${context}"
+  message=$(docker images --format "**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})" "$tag")
+  echo "${message:-Unknown}" | buildkite-agent annotate --style info --context "${context} size"
+fi
