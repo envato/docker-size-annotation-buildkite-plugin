@@ -1,6 +1,8 @@
-# Annotation Image Size
+# Docker size annotation
 
-Annotates the build with a docker image size
+Annotates the build with a docker image size.
+
+Supports [docker-compose-buildkite-plugin](docker-compose-buildkite-plugin)
 
 ## Example
 
@@ -8,10 +10,11 @@ Add the following to your `pipeline.yml`:
 
 ```yml
 steps:
-  - command: ls
+  - label: "Build My Service"
     plugins:
-      - envato/annotate-image-size-buildkite-plugin#v1.0.0:
-          pattern: "*.md"
+      - docker-compose#v3.8.0:
+          build: my-service
+      - envato/docker-size-annotation#v1.0.0: ~
 ```
 
 ## Configuration
@@ -24,4 +27,10 @@ To run the lint:
 
 ```shell
 docker-compose run --rm lint
+```
+
+To run the tests:
+
+```shell
+docker-compose run --rm tests
 ```

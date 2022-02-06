@@ -1,6 +1,11 @@
 services:
   lint:
     image: buildkite/plugin-linter
-    command: ["--id", "envato/annotate-image-size"]
+    command: ["--id", "envato/docker-size-annotation"]
     volumes:
       - ".:/plugin:ro"
+
+  tests:
+    image: buildkite/plugin-tester
+    volumes:
+      - ".:/plugin"

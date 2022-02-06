@@ -1,8 +1,8 @@
-name: Annotation Image Size
+name: Docker Size Annotation
 description: Annotates the build with a docker image size
-author: https://github.com/envato/annotate-image-size-buildkite-plugin
+author: https://github.com/envato/docker-size-annotation-buildkite-plugin
 requirements:
   - docker
 configuration:
-  properties: []
+  properties: {}
   additionalProperties: false
