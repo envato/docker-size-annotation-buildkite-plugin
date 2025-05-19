@@ -27,8 +27,8 @@ function docker_compose_project_name() {
   echo "buildkite${BUILDKITE_JOB_ID//-}"
 }
 
-if [[ -n "$(plugin_read_list IMAGES)" ]]; then
-  for image in $(plugin_read_list IMAGES); do
+if [[ -n "$(plugin_read_list ANNOTATE)" ]]; then
+  for image in $(plugin_read_list ANNOTATE); do
     tag="$(docker_compose_project_name)-${image}"
     context="image_size_${tag}"
     echo "Using tag: ${tag} and context: ${context}"

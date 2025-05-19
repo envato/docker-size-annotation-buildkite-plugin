@@ -5,7 +5,7 @@ requirements:
   - docker
 configuration:
   properties:
-    images:
+    annotate:
       type: [string, array]
       minimum: 1
   additionalProperties: false

@@ -12,14 +12,33 @@ Add the following to your `pipeline.yml`:
 steps:
   - label: "Build My Service"
     plugins:
-      - docker-compose#v3.8.0:
+      - docker-compose#v5.9.0:
           build: my-service
-      - envato/docker-size-annotation#v1.0.0: ~
+      - envato/docker-size-annotation#v2.0.0:
+          annotate: my-service
+```
+
+or
+
+```yml
+steps:
+  - label: "Build My Services"
+    plugins:
+      - docker-compose#v5.9.0:
+          build:
+            - my-service
+            - my-service2
+      - envato/docker-size-annotation#v2.0.0:
+          annotate:
+            - my-service
+            - my-service2
 ```
 
 ## Configuration
 
-n/a
+`annotate`
+
+The name of a service(s) to annotate. Either a single service or multiple services can be provided as an array.
 
 ## Developing
 

@@ -11,7 +11,7 @@ setup() {
 @test "Annotates a single build" {
   export BUILDKITE_LABEL="My Label"
   export BUILDKITE_JOB_ID=0123456789abcedf
-  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES="my-service"
+  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_ANNOTATE="my-service"
 
   stub docker \
     "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
@@ -30,7 +30,7 @@ setup() {
 @test "Annotates a single build (via array)" {
   export BUILDKITE_LABEL="My Label"
   export BUILDKITE_JOB_ID=0123456789abcedf
-  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES_0="my-service"
+  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_ANNOTATE_0="my-service"
 
   stub docker \
     "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
@@ -49,8 +49,8 @@ setup() {
 @test "Annotates a many build" {
   export BUILDKITE_LABEL="My Label"
   export BUILDKITE_JOB_ID=0123456789abcedf
-  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES_0="my-service"
-  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES_1="my-service2"
+  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_ANNOTATE_0="my-service"
+  export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_ANNOTATE_1="my-service2"
 
   stub docker \
     "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB" \
