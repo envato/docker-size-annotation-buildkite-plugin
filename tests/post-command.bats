@@ -14,7 +14,7 @@ setup() {
   export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES="my-service"
 
   stub docker \
-    "images --format \"**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
+    "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
 
   stub buildkite-agent \
     "annotate --style info --context \"image_size_buildkite0123456789abcedf-my-service\" : exit 0"
@@ -33,7 +33,7 @@ setup() {
   export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES_0="my-service"
 
   stub docker \
-    "images --format \"**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
+    "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB"
 
   stub buildkite-agent \
     "annotate --style info --context \"image_size_buildkite0123456789abcedf-my-service\" : exit 0"
@@ -53,8 +53,8 @@ setup() {
   export BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_IMAGES_1="my-service2"
 
   stub docker \
-    "images --format \"**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB" \
-    "images --format \"**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service2\" : echo 10MB"
+    "images --format \"**${BUILDKITE_LABEL}** - *my-service* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service\" : echo 5MB" \
+    "images --format \"**${BUILDKITE_LABEL}** - *my-service2* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})\" \"buildkite0123456789abcedf-my-service2\" : echo 10MB"
 
   stub buildkite-agent \
     "annotate --style info --context \"image_size_buildkite0123456789abcedf-my-service\" : exit 0" \

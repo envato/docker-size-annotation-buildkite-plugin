@@ -32,7 +32,7 @@ if [[ -n "$(plugin_read_list IMAGES)" ]]; then
     tag="$(docker_compose_project_name)-${image}"
     context="image_size_${tag}"
     echo "Using tag: ${tag} and context: ${context}"
-    message=$(docker images --format "**${BUILDKITE_LABEL}** docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})" "$tag")
+    message=$(docker images --format "**${BUILDKITE_LABEL}** - *${image}* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})" "$tag")
     echo "${message:-Unknown}" | buildkite-agent annotate --style info --context "${context}"
   done
 fi
