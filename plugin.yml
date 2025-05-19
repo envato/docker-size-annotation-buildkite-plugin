@@ -4,5 +4,8 @@ author: https://github.com/envato/docker-size-annotation-buildkite-plugin
 requirements:
   - docker
 configuration:
-  properties: {}
+  properties:
+    images:
+      type: [string, array]
+      minimum: 1
   additionalProperties: false
