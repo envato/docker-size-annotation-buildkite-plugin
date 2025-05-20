@@ -1,0 +1,4 @@
+name: project
+services:
+  my-service:
+    image: xxxxxxxxxxxx.dkr.ecr.amazonaws.com/my-service:latest

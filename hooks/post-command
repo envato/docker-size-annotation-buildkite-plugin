@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+BUILDKITE_JOB_ID="${BUILDKITE_JOB_ID:-}"
 
 function plugin_read_list() {
   prefix_read_list "BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_$1"
@@ -23,16 +24,45 @@ function prefix_read_list() {
   fi
 }
 
-function docker_compose_project_name() {
-  echo "buildkite${BUILDKITE_JOB_ID//-}"
+function compose_tag_for_service() {
+  local service="$1"
+
+  echo "buildkite${BUILDKITE_JOB_ID//-}-${service}"
 }
 
+function compose_image_for_service() {
+  local service="$1"
+  local image=""
+
+  image=$(docker compose config \
+    | grep -E "^(  [._[:alnum:]-]+:|    image:)" \
+    | grep -E "(  ${service}:)" -A 1 \
+    | grep -oE '  image: (.+)' \
+    | awk '{print $2}')
+
+  echo "$image"
+}
+
+
+services=()
+
 if [[ -n "$(plugin_read_list ANNOTATE)" ]]; then
-  for image in $(plugin_read_list ANNOTATE); do
-    tag="$(docker_compose_project_name)-${image}"
-    context="image_size_${tag}"
-    echo "Using tag: ${tag} and context: ${context}"
-    message=$(docker images --format "**${BUILDKITE_LABEL}** - *${image}* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})" "$tag")
-    echo "${message:-Unknown}" | buildkite-agent annotate --style info --context "${context}"
+  for service_name in $(plugin_read_list ANNOTATE); do
+    services+=("$service_name")
   done
 fi
+
+for service_name in "${services[@]}"; do
+  context="image-size-${service_name}"
+
+  tags=("$(compose_tag_for_service "$service_name")" "$(compose_image_for_service "$service_name")")
+
+  for tag in "${tags[@]}" ; do
+    echo "Checking for tag: ${tag}"
+    message=$(docker images --format "**${BUILDKITE_LABEL}** - *${service_name}* docker image is **{{.Size}}** (Tag {{.Tag}} ID {{.ID}})" "$tag")
+    if [ -n "$message" ]; then
+      echo "${message:-Unknown}" | buildkite-agent annotate --style info --context "${context}"
+      break;
+    fi
+  done
+done
