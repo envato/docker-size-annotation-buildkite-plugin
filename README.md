@@ -14,7 +14,7 @@ steps:
     plugins:
       - docker-compose#v5.9.0:
           build: my-service
-      - envato/docker-size-annotation#v2.0.0:
+      - envato/docker-size-annotation#v2.1.0:
           annotate: my-service
 ```
 
@@ -28,7 +28,7 @@ steps:
           build:
             - my-service
             - my-service2
-      - envato/docker-size-annotation#v2.0.0:
+      - envato/docker-size-annotation#v2.1.0:
           annotate:
             - my-service
             - my-service2
