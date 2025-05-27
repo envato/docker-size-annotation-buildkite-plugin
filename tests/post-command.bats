@@ -23,6 +23,7 @@ setup() {
   run "$PWD/hooks/post-command"
 
   assert_success
+  refute_output --partial "Skipping annotation because the job failed with"
 
   unstub docker
   unstub buildkite-agent
@@ -43,6 +44,7 @@ setup() {
   run "$PWD/hooks/post-command"
 
   assert_success
+  refute_output --partial "Skipping annotation because the job failed with"
 
   unstub docker
   unstub buildkite-agent
@@ -67,6 +69,7 @@ setup() {
   run "$PWD/hooks/post-command"
 
   assert_success
+  refute_output --partial "Skipping annotation because the job failed with"
 
   unstub docker
   unstub buildkite-agent
@@ -88,7 +91,20 @@ setup() {
   run "$PWD/hooks/post-command"
 
   assert_success
+  refute_output --partial "Skipping annotation because the job failed with"
 
   unstub docker
   unstub buildkite-agent
+}
+
+
+@test "Gracefully skips when the build fails" {
+  export BUILDKITE_LABEL="My Label"
+  export BUILDKITE_JOB_ID=0123456789abcedf
+  export BUILDKITE_COMMAND_EXIT_STATUS=1
+
+  run "$PWD/hooks/post-command"
+
+  assert_success
+  assert_output --partial "Skipping annotation because the job failed with 1"
 }

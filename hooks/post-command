@@ -2,6 +2,12 @@
 set -euo pipefail
 
 BUILDKITE_JOB_ID="${BUILDKITE_JOB_ID:-}"
+BUILDKITE_COMMAND_EXIT_STATUS="${BUILDKITE_COMMAND_EXIT_STATUS:-0}"
+
+if [ "$BUILDKITE_COMMAND_EXIT_STATUS" -ne "0" ]; then
+  echo "Skipping annotation because the job failed with ${BUILDKITE_COMMAND_EXIT_STATUS}"
+  exit 0
+fi
 
 function plugin_read_list() {
   prefix_read_list "BUILDKITE_PLUGIN_DOCKER_SIZE_ANNOTATION_$1"
